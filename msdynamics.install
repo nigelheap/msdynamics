@@ -1,0 +1,95 @@
+<?php 
+
+
+
+function msdynamics_install() {
+  // Create tables.
+  
+
+}
+
+/**
+ * Implements hook_schema().
+ */
+function msdynamics_schema() {
+
+  $schema['msdynamics'] = array(
+    'description' => 'Holds definitions ms dynamics data.',
+    'fields' => array(
+      'msid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'msdynamics_fieldname' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Field name in ms dynamics.',
+      ),
+      'msdynamics_fieldlabel' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Field label in ms dynamics.',
+      ),
+      'msdynamics_fielddescription' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Field desc in ms dynamics.',
+      ),
+      'msdynamics_fieldrequired' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Field required in ms dynamics.',
+      ),
+      'user_fieldname' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Drupal userfield name',
+      ),
+      'user_fieldtype' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Drupal userfield type',
+      ),
+      'user_fieldcallback' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Drupal userfield callback',
+      ),
+    ),
+    'primary key' => array('msid'),
+    'unique keys' => array(
+      'msdynamics_fieldname' => array('msdynamics_fieldname'),
+    ),
+  );
+
+  return $schema;
+
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function msdynamics_uninstall() {
+  db_delete('variable')
+    ->condition('name', db_like('msdynamics_') . '%', 'LIKE')
+    ->execute();
+  cache_clear_all('variables', 'cache_bootstrap');
+}
+
+

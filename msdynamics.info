@@ -1,0 +1,6 @@
+name = Microsoft Dynamics CRM
+description = Enables pushing of data to Microsoft Dynamics CRM 
+package = CRM
+core = 7.x
+files[] = msdynamics.actions.inc
+files[] = library/on-site/DynamicsCRM2011.init.php

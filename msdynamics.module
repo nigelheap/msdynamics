@@ -1,0 +1,120 @@
+<?php
+
+
+function msdynamics_init(){
+    module_load_include('inc', 'msdynamics', 'msdynamics.actions');
+}
+
+/**
+ * Implements of hook_permission().
+ */
+function msdynamics_permission() {
+  return array(
+    'administer msdynamics config' => array(
+      'title' => t('Administer Microsoft Dynamics'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+function msdynamics_user_update(&$edit, $account, $category) {
+  
+  $indexed = variable_get('msdynamics_indexed', 0);
+ 
+  if($indexed == 1){
+    msdynamics_updateCreateContact($account);
+  }
+ 
+}
+
+function msdynamics_user_insert(&$edit, $account, $category) {
+
+  $indexed = variable_get('msdynamics_indexed', 0);
+ 
+  if($indexed == 1){
+    msdynamics_updateCreateContact($account);
+  }
+
+}
+
+
+function msdynamics_user_delete($account) {
+  
+  $indexed = variable_get('msdynamics_indexed', 0);
+ 
+  if($indexed == 1){
+    msdynamics_deleteContact($account);
+  }
+
+}
+
+
+/**
+ * this might be used later
+ * @return nothing ever
+ */
+function msdynamics_notcron() {
+
+  $expires = variable_get('msdynamics_cron_last_run', REQUEST_TIME);
+
+  variable_set('msdynamics_cron_last_run', REQUEST_TIME);
+
+}
+
+/**
+ * HELPERS
+ */
+
+
+
+function msdynamics_load_fields($activeOnly = false){
+
+    $where = "";
+    if($activeOnly == true){
+        $where = " WHERE user_fieldname IS NOT NULL AND user_fieldname != ''";
+    }
+
+    return db_query("SELECT * FROM {msdynamics}". $where, array(), array(
+      'fetch' => PDO::FETCH_ASSOC,
+    ));
+
+}
+
+
+function msdynamics_get_vars(){
+  return array(
+    'organizationdiscoveryurl' => array(
+       'title' => 'Organization Discovery URL',
+       'description' => 'Found in the CRM under Settings > Customization > Developer Resources'       
+    ), 
+    'organizationorganizationurl' => array(
+       'title' => 'Organization Organization URL',
+       'description' => 'Found in the CRM under Settings > Customization > Developer Resources'       
+    ), 
+    'organizationuniquename' => array(
+        'title' => 'Organization Unique Name',
+        'description' => 'Found in the CRM under Settings > Customization > Developer Resources'
+    ),
+    'loginusername' => array(
+        'title' => 'Login username',
+        'description' => 'Username of the system account that you want to use the CRM API. Include domain here example : domain/username'
+    ),
+    'loginpassword' => array(
+        'title' => 'Login password',
+        'description' => 'Password of the system account that you want to use the CRM API'
+    ),
+
+  );
+}
+
+
+function msdynamics_get_fieldtypes(){
+    return array(
+        'string' => 'String',
+        'boolean' => 'Boolean',
+        'callback' => 'Callback',
+    );
+}
+
+
+

@@ -1,0 +1,108 @@
+<?php
+
+
+function msdynamics_ui_init() {
+  if (arg(0) == 'admin') {
+    $path = drupal_get_path('module', 'msdynamics_ui');
+    //drupal_add_js($path . '/css/msdynamics_ui.js');
+    drupal_add_css($path . '/css/msdynamics_ui.css');
+  }
+}
+
+
+/**
+ * Implements hook_menu()
+ */
+function msdynamics_ui_menu() {
+  $items = array();
+
+
+
+  $items['admin/config/msdynamics'] = array(
+    'title' => 'Microsoft Dynamics Connection',
+    'page callback' => 'msdynamics_ui_config',
+    //'page arguments' => array('msdynamics_ui_config'),
+    'access arguments' => array('administer msdynamics config'),
+    'weight' => 10,
+    //'type' => MENU_LOCAL_TASK,
+    'file path' => drupal_get_path('module', 'msdynamics_ui'),
+    'file' => 'msdynamics_ui.admin.inc',
+  );
+
+  $items['admin/config/msdynamics/connection'] = array(
+    'title' => 'Connection',
+    'weight' => -1,
+    'description' => 'connection',
+    'page callback' => 'msdynamics_ui_config',
+    //'page arguments' => array('msdynamics_ui_config'),
+    'access arguments' => array('administer msdynamics config'),
+    'type' => MENU_LOCAL_TASK,
+    'file path' => drupal_get_path('module', 'msdynamics_ui'),
+    'file' => 'msdynamics_ui.admin.inc',
+  );
+
+  $items['admin/config/msdynamics/mapping'] = array(
+    'title' => 'User - Field Mapping',
+    'weight' => 1,
+    'description' => 'connection',
+    'page callback' => 'msdynamics_ui_mapping',
+    //'page arguments' => array('msdynamics_ui_mapping'),
+    'access arguments' => array('administer msdynamics config'),
+    'type' => MENU_LOCAL_TASK,
+    'file path' => drupal_get_path('module', 'msdynamics_ui'),
+    'file' => 'msdynamics_ui.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Process variables for msdynamics-config.tpl.php.
+ *
+ * @see msdynamics-config.tpl.php
+ */
+function template_preprocess_msdynamics_config(&$variables) {
+
+  $variables['form'] = drupal_render($variables['form']);
+  $variables['tester'] = drupal_render($variables['tester']);
+  $variables['index'] = drupal_render($variables['index']);
+
+}
+
+/**
+ * Process variables for msdynamics-mapping.tpl.php.
+ *
+ * @see msdynamics-mapping.tpl.php
+ */
+function template_preprocess_msdynamics_mapping(&$variables) {
+
+  $variables['form'] = drupal_render($variables['form']);
+
+}
+
+
+
+/**
+ * Implements hook_theme().
+ */
+function msdynamics_ui_theme($existing, $type, $theme, $path) {
+  return array(
+    'msdynamics_config' => array(
+      'variables' => array(
+        'form'          => NULL,
+        'tester'       => 'Please enter your connection details',
+      ),
+      'template' => 'msdynamics-config',
+      'path' => $path . '/templates',
+    ),
+    'msdynamics_mapping' => array(
+      'variables' => array(
+        'form'          => NULL,
+        'info'       => 'Please enter your connection details on the config page',
+      ),
+      'template' => 'msdynamics-mapping',
+      'path' => $path . '/templates',
+    ),
+  );
+}

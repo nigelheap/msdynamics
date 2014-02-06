@@ -1,0 +1,6 @@
+name = Microsoft Dynamics CRM UI
+description = Enables pushing of data to Microsoft Dynamics CRM 
+package = CRM
+core = 7.x
+dependencies[] = msdynamics
+files[] = msdynamics_ui.admin.inc
