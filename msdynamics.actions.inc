@@ -175,6 +175,18 @@ function msdynamics_findContacts(){
 
 function msdynamics_updateCreateContact($account){
 
+    $something = new stdClass();
+    $something->hello = "something";
+
+    foreach (module_implements('msdynamics_contact_update') as $module) {
+      $function = $module . '_msdynamics_contact_update';
+      $function($something, $account);
+    }
+
+    dpm($something);
+
+    return;
+
     $dyanmicsFields = msdynamics_load_fields(true);
     $fields = array();
     $search = array();

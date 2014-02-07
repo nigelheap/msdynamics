@@ -1,8 +1,23 @@
 <?php
 
-
+/**
+ * Adds in files required
+ * @return void 
+ */
 function msdynamics_init(){
     module_load_include('inc', 'msdynamics', 'msdynamics.actions');
+}
+
+/**
+ * hook_hook_info
+ * @return Array 
+ */
+
+function msdynamics_hook_info() {
+  $hooks['msdynamics_contact_update'] = array(
+    'label' => t('Update contact callback'),
+  );
+  return $hooks;
 }
 
 /**
@@ -26,6 +41,15 @@ function msdynamics_user_update(&$edit, $account, $category) {
   }
  
 }
+
+/**
+ * hook_user_insert
+ * the callback after a user is saved
+ * @param  $edit     
+ * @param  Object $account  
+ * @param  $category
+ * @return Void          
+ */
 
 function msdynamics_user_insert(&$edit, $account, $category) {
 
