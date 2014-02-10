@@ -1,0 +1,9 @@
+<?php 
+
+
+function adfs_msdynamics_msdynamics_contact_update(&$connection, &$account) {
+  $connection->hello = 'do';
+
+  
+
+}
